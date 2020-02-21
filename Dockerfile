@@ -1,0 +1,12 @@
+FROM ianturton/geoserver-2.16-jdk-8-zoomstack:latest
+
+# Reduce memory footprint for tomcat (UWS):
+ENV CATALINA_OPTS="-Xms4g -Xmx4g"
+
+ADD marlin-0.9.4.3-Unsafe.jar /usr/local/tomcat/marlin-0.9.4.3-Unsafe.jar
+ADD marlin-0.9.4.3-Unsafe-sun-java2d.jar /usr/local/tomcat/marlin-0.9.4.3-Unsafe-sun-java2d.jar
+
+ENV MARLIN_JAR_PREFIX="/usr/local/tomcat/marlin-0.9.4.3-Unsafe"
+
+ENV JAVA_OPTS="-Xbootclasspath/a:$MARLIN_JAR_PREFIX.jar -Xbootclasspath/p:$MARLIN_JAR_PREFIX-sun-java2d.jar -Dsun.java2d.renderer=org.marlin.pisces.DMarlinRenderingEngine -Dsun.java2d.renderer.log=true"
+
